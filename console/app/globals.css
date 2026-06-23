@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+/* Class-based dark mode so next-themes can toggle `.dark` on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #0b1220;
+  --card: #ffffff;
+  --muted: #f4f5f7;
+  --muted-foreground: #5b6472;
+  --border: #e6e8ec;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+
+  /* Status semantics — single source of color (see docs/CONSOLE_UI.md §4). */
+  --status-queued: #64748b; /* slate */
+  --status-running: #2563eb; /* blue */
+  --status-success: #16a34a; /* green */
+  --status-failed: #dc2626; /* red */
+  --status-retrying: #d97706; /* amber */
+  --status-skipped: #9ca3af; /* gray */
+  --status-upstream: #b45563; /* muted red */
+  --status-deferred: #7c3aed; /* violet */
+}
+
+.dark {
+  --background: #0a0e17;
+  --foreground: #e6e8ec;
+  --card: #11161f;
+  --muted: #1a2030;
+  --muted-foreground: #93a0b4;
+  --border: #232b3a;
+  --primary: #3b82f6;
+  --primary-foreground: #0a0e17;
+
+  --status-queued: #94a3b8;
+  --status-running: #60a5fa;
+  --status-success: #4ade80;
+  --status-failed: #f87171;
+  --status-retrying: #fbbf24;
+  --status-skipped: #6b7280;
+  --status-upstream: #d08793;
+  --status-deferred: #a78bfa;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-status-queued: var(--status-queued);
+  --color-status-running: var(--status-running);
+  --color-status-success: var(--status-success);
+  --color-status-failed: var(--status-failed);
+  --color-status-retrying: var(--status-retrying);
+  --color-status-skipped: var(--status-skipped);
+  --color-status-upstream: var(--status-upstream);
+  --color-status-deferred: var(--status-deferred);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}

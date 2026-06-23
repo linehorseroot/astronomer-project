@@ -1,0 +1,12 @@
+# OS
+.DS_Store
+
+# Presentation artifacts (not source)
+*.pptx
+
+# Nested working clone (separate checkout of the same remote)
+/astronomer-project/
+
+# Empty component placeholders (no code yet)
+/astronomer-core/
+/astronomer-ui/
