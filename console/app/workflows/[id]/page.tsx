@@ -1,7 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
+import { Pencil } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RunGraph } from "@/features/graph";
 import { useWorkflow } from "@/lib/query/hooks";
@@ -18,6 +21,14 @@ export default function WorkflowDetailPage() {
       <PageHeader
         title={wf.name}
         description={`${wf.tenant_id} · v${wf.version} · ${wf.status}`}
+        actions={
+          <Link href={`/workflows/${wf.id}/builder`}>
+            <Button size="sm" variant="outline">
+              <Pencil className="h-4 w-4" />
+              Open builder
+            </Button>
+          </Link>
+        }
       />
 
       <RunGraph workflow={wf} />

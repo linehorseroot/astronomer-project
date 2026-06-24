@@ -41,6 +41,14 @@ export class MockAdapter implements DataAdapter {
     return clone(this.workflows.find((w) => w.id === id));
   }
 
+  async saveWorkflow(workflow: Workflow): Promise<Workflow> {
+    const saved = clone({ ...workflow, updated_at: new Date().toISOString() });
+    const i = this.workflows.findIndex((w) => w.id === workflow.id);
+    if (i >= 0) this.workflows[i] = saved;
+    else this.workflows.push(saved);
+    return clone(saved);
+  }
+
   async listSchedules(workflowId: string): Promise<Schedule[]> {
     return clone(this.schedules.filter((s) => s.workflow_id === workflowId));
   }

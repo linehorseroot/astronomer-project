@@ -31,6 +31,8 @@ export interface DataAdapter {
   // Workflows
   listWorkflows(): Promise<Workflow[]>;
   getWorkflow(id: string): Promise<Workflow | undefined>;
+  /** Upsert a workflow draft (autosave / save / publish). */
+  saveWorkflow(workflow: Workflow): Promise<Workflow>;
 
   // Schedules
   listSchedules(workflowId: string): Promise<Schedule[]>;

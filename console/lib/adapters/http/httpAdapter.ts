@@ -32,6 +32,9 @@ export class HttpAdapter implements DataAdapter {
   getWorkflow(): Promise<Workflow | undefined> {
     throw new Error(NOT_IMPLEMENTED);
   }
+  saveWorkflow(): Promise<Workflow> {
+    throw new Error(NOT_IMPLEMENTED);
+  }
   listSchedules(): Promise<Schedule[]> {
     throw new Error(NOT_IMPLEMENTED);
   }

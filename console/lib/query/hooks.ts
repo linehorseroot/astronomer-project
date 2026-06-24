@@ -3,7 +3,7 @@
 /** Typed hooks over the data adapter. Components use these, never the adapter directly. */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAdapter } from "@/lib/adapters";
-import type { RerunRequest } from "@/lib/contract";
+import type { RerunRequest, Workflow } from "@/lib/contract";
 import { qk } from "./keys";
 
 export function useTemplates() {
@@ -20,6 +20,17 @@ export function useWorkflows() {
 
 export function useWorkflow(id: string) {
   return useQuery({ queryKey: qk.workflow(id), queryFn: () => getAdapter().getWorkflow(id) });
+}
+
+export function useSaveWorkflow() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (wf: Workflow) => getAdapter().saveWorkflow(wf),
+    onSuccess: (wf) => {
+      qc.invalidateQueries({ queryKey: qk.workflows });
+      qc.invalidateQueries({ queryKey: qk.workflow(wf.id) });
+    },
+  });
 }
 
 export function useSchedules(workflowId: string) {
