@@ -5,6 +5,7 @@ export const qk = {
   workflows: ["workflows"] as const,
   workflow: (id: string) => ["workflows", id] as const,
   schedules: (workflowId: string) => ["schedules", workflowId] as const,
+  allSchedules: ["schedules", "all"] as const,
   runs: ["runs"] as const,
   run: (executionId: string) => ["runs", executionId] as const,
 };

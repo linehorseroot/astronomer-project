@@ -53,6 +53,22 @@ export class MockAdapter implements DataAdapter {
     return clone(this.schedules.filter((s) => s.workflow_id === workflowId));
   }
 
+  async listAllSchedules(): Promise<Schedule[]> {
+    return clone(this.schedules);
+  }
+
+  async saveSchedule(schedule: Schedule): Promise<Schedule> {
+    const saved = clone(schedule);
+    const i = this.schedules.findIndex((s) => s.id === schedule.id);
+    if (i >= 0) this.schedules[i] = saved;
+    else this.schedules.push(saved);
+    return clone(saved);
+  }
+
+  async deleteSchedule(id: string): Promise<void> {
+    this.schedules = this.schedules.filter((s) => s.id !== id);
+  }
+
   async listRuns(): Promise<Run[]> {
     return clone(this.runs);
   }

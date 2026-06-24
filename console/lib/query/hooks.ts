@@ -3,7 +3,7 @@
 /** Typed hooks over the data adapter. Components use these, never the adapter directly. */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAdapter } from "@/lib/adapters";
-import type { RerunRequest, Workflow } from "@/lib/contract";
+import type { RerunRequest, Schedule, Workflow } from "@/lib/contract";
 import { qk } from "./keys";
 
 export function useTemplates() {
@@ -37,6 +37,37 @@ export function useSchedules(workflowId: string) {
   return useQuery({
     queryKey: qk.schedules(workflowId),
     queryFn: () => getAdapter().listSchedules(workflowId),
+  });
+}
+
+export function useAllSchedules() {
+  return useQuery({ queryKey: qk.allSchedules, queryFn: () => getAdapter().listAllSchedules() });
+}
+
+function useScheduleInvalidation() {
+  const qc = useQueryClient();
+  return (s: Schedule) => {
+    qc.invalidateQueries({ queryKey: qk.allSchedules });
+    qc.invalidateQueries({ queryKey: qk.schedules(s.workflow_id) });
+  };
+}
+
+export function useSaveSchedule() {
+  const invalidate = useScheduleInvalidation();
+  return useMutation({
+    mutationFn: (s: Schedule) => getAdapter().saveSchedule(s),
+    onSuccess: invalidate,
+  });
+}
+
+export function useDeleteSchedule() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (s: Schedule) => getAdapter().deleteSchedule(s.id).then(() => s),
+    onSuccess: (s) => {
+      qc.invalidateQueries({ queryKey: qk.allSchedules });
+      qc.invalidateQueries({ queryKey: qk.schedules(s.workflow_id) });
+    },
   });
 }
 

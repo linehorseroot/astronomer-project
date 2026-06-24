@@ -38,6 +38,15 @@ export class HttpAdapter implements DataAdapter {
   listSchedules(): Promise<Schedule[]> {
     throw new Error(NOT_IMPLEMENTED);
   }
+  listAllSchedules(): Promise<Schedule[]> {
+    throw new Error(NOT_IMPLEMENTED);
+  }
+  saveSchedule(): Promise<Schedule> {
+    throw new Error(NOT_IMPLEMENTED);
+  }
+  deleteSchedule(): Promise<void> {
+    throw new Error(NOT_IMPLEMENTED);
+  }
   listRuns(): Promise<Run[]> {
     throw new Error(NOT_IMPLEMENTED);
   }

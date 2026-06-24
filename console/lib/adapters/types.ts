@@ -36,6 +36,9 @@ export interface DataAdapter {
 
   // Schedules
   listSchedules(workflowId: string): Promise<Schedule[]>;
+  listAllSchedules(): Promise<Schedule[]>;
+  saveSchedule(schedule: Schedule): Promise<Schedule>;
+  deleteSchedule(id: string): Promise<void>;
 
   // Runs
   listRuns(): Promise<Run[]>;
