@@ -7,6 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
+import { SkeletonCards } from "@/components/ui/skeleton";
+import { ErrorState } from "@/components/ui/states";
 import { useTemplates } from "@/lib/query/hooks";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +19,7 @@ const APPROVAL: Record<string, string> = {
 };
 
 export default function TemplatesPage() {
-  const { data, isLoading } = useTemplates();
+  const { data, isLoading, isError, refetch } = useTemplates();
   const [q, setQ] = useState("");
 
   const byCategory = useMemo(() => {
@@ -54,7 +56,8 @@ export default function TemplatesPage() {
         />
       </div>
 
-      {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+      {isLoading && <SkeletonCards />}
+      {isError && <ErrorState onRetry={() => refetch()} />}
       {empty && <p className="text-sm text-muted-foreground">No templates match “{q}”.</p>}
 
       <div className="space-y-6">

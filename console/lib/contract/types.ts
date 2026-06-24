@@ -159,6 +159,7 @@ export const TaskInstance = z.object({
   started_at: z.string().optional(),
   finished_at: z.string().optional(),
   duration_ms: z.number().int().nonnegative().optional(),
+  error: z.string().optional(), // failure reason (DB error_message; DESIGN §3.3)
 });
 export type TaskInstance = z.infer<typeof TaskInstance>;
 
@@ -201,6 +202,8 @@ export const LifecycleEventType = z.enum([
   "TASK_SUCCEEDED",
   "TASK_FAILED",
   "TASK_RETRYING",
+  "TASK_SKIPPED",
+  "TASK_UPSTREAM_FAILED",
 ]);
 export type LifecycleEventType = z.infer<typeof LifecycleEventType>;
 
@@ -211,5 +214,6 @@ export const LifecycleEvent = z.object({
   status: TaskStatus,
   attempt: z.number().int().nonnegative(),
   ts: z.string(), // ISO 8601
+  error: z.string().optional(), // present on TASK_FAILED (DESIGN §3.3)
 });
 export type LifecycleEvent = z.infer<typeof LifecycleEvent>;

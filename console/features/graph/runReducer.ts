@@ -11,6 +11,7 @@ export interface NodeRunState {
   started_at?: string;
   finished_at?: string;
   duration_ms?: number;
+  error?: string;
 }
 
 export type RunState = Record<string, NodeRunState>;
@@ -37,6 +38,7 @@ export function initFromRun(run: Run): RunState {
       started_at: t.started_at,
       finished_at: t.finished_at,
       duration_ms: t.duration_ms,
+      error: t.error,
     };
   }
   return s;
@@ -46,6 +48,7 @@ export function initFromRun(run: Run): RunState {
 export function runReducer(state: RunState, e: LifecycleEvent): RunState {
   const prev = state[e.node_id] ?? { status: "queued" as TaskStatus, attempt: 0 };
   const next: NodeRunState = { ...prev, status: e.status, attempt: e.attempt };
+  if (e.error) next.error = e.error;
   if (e.type === "TASK_STARTED" && !next.started_at) next.started_at = e.ts;
   if (TERMINAL.has(e.status)) {
     next.finished_at = e.ts;

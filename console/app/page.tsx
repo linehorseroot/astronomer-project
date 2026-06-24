@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SkeletonList } from "@/components/ui/skeleton";
+import { ErrorState } from "@/components/ui/states";
 import { StatusBadge } from "@/components/status/StatusBadge";
 import { useRuns, useWorkflows } from "@/lib/query/hooks";
 
@@ -34,7 +36,8 @@ export default function DashboardPage() {
             <CardTitle>Recent runs</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {runs.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+            {runs.isLoading && <SkeletonList rows={3} />}
+            {runs.isError && <ErrorState onRetry={() => runs.refetch()} />}
             {runs.data?.length === 0 && (
               <p className="text-sm text-muted-foreground">No runs yet.</p>
             )}
@@ -56,7 +59,8 @@ export default function DashboardPage() {
             <CardTitle>Workflows</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {workflows.isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+            {workflows.isLoading && <SkeletonList rows={3} />}
+            {workflows.isError && <ErrorState onRetry={() => workflows.refetch()} />}
             {workflows.data?.map((w) => (
               <Link
                 key={w.id}

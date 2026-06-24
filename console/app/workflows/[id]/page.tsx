@@ -6,14 +6,16 @@ import { CalendarClock, Pencil } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ErrorState } from "@/components/ui/states";
 import { RunGraph } from "@/features/graph";
 import { useWorkflow } from "@/lib/query/hooks";
 
 export default function WorkflowDetailPage() {
   const params = useParams<{ id: string }>();
-  const { data: wf, isLoading } = useWorkflow(params.id);
+  const { data: wf, isLoading, isError, refetch } = useWorkflow(params.id);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (isError) return <ErrorState onRetry={() => refetch()} />;
   if (!wf) return <p className="text-sm text-muted-foreground">Workflow not found.</p>;
 
   return (

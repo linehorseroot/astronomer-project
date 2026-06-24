@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { StatusBadge } from "@/components/status/StatusBadge";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
+import { ErrorState } from "@/components/ui/states";
 import { RunGraph } from "@/features/graph";
 import { RerunMenu, RunTimeline, TaskDrilldown } from "@/features/runs";
 import { useRun, useWorkflow } from "@/lib/query/hooks";
@@ -17,11 +18,12 @@ import { useRun, useWorkflow } from "@/lib/query/hooks";
  */
 export default function RunDetailPage() {
   const params = useParams<{ runId: string }>();
-  const { data: run, isLoading } = useRun(params.runId);
+  const { data: run, isLoading, isError, refetch } = useRun(params.runId);
   const { data: workflow } = useWorkflow(run?.workflow_id ?? "");
   const [selected, setSelected] = useState<string | null>(null);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (isError) return <ErrorState onRetry={() => refetch()} />;
   if (!run) return <p className="text-sm text-muted-foreground">Run not found.</p>;
 
   return (

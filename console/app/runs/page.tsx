@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent } from "@/components/ui/card";
+import { SkeletonList } from "@/components/ui/skeleton";
+import { ErrorState } from "@/components/ui/states";
 import { StatusBadge } from "@/components/status/StatusBadge";
 import { useRuns } from "@/lib/query/hooks";
 
@@ -15,11 +17,13 @@ function durationLabel(started: string, finished?: string): string {
 }
 
 export default function RunsPage() {
-  const { data, isLoading } = useRuns();
+  const { data, isLoading, isError, refetch } = useRuns();
   return (
     <div>
       <PageHeader title="Runs" description="History of workflow runs and their outcomes." />
-      {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+      {isLoading && <SkeletonList />}
+      {isError && <ErrorState onRetry={() => refetch()} />}
+      {data && (
       <Card>
         <CardContent className="divide-y divide-border p-0">
           {data?.map((r) => (
@@ -51,6 +55,7 @@ export default function RunsPage() {
           )}
         </CardContent>
       </Card>
+      )}
     </div>
   );
 }

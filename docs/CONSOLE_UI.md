@@ -63,6 +63,7 @@ One color map, used everywhere (graph, badges, timelines, dashboard):
 |---|---|---|
 | Queued | Waiting to start | `--status-queued` (slate) |
 | Running | Executing | `--status-running` (blue, animated) |
+| Deferred | Dispatched to the Execution Engine; awaiting result | `--status-deferred` (violet) |
 | Success | Completed OK | `--status-success` (green) |
 | Failed | Errored | `--status-failed` (red) |
 | Retrying | Failed, will retry | `--status-retrying` (amber) |

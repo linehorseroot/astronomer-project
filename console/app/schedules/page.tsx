@@ -4,11 +4,13 @@ import Link from "next/link";
 import { CalendarClock } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent } from "@/components/ui/card";
+import { SkeletonList } from "@/components/ui/skeleton";
+import { ErrorState } from "@/components/ui/states";
 import { describeCron } from "@/features/schedules";
 import { useAllSchedules, useWorkflows } from "@/lib/query/hooks";
 
 export default function SchedulesPage() {
-  const { data: schedules, isLoading } = useAllSchedules();
+  const { data: schedules, isLoading, isError, refetch } = useAllSchedules();
   const { data: workflows } = useWorkflows();
   const nameOf = (id: string) => workflows?.find((w) => w.id === id)?.name ?? id;
 
@@ -18,7 +20,8 @@ export default function SchedulesPage() {
         title="Schedules"
         description="Every schedule across your workflows. Open a workflow to add or edit."
       />
-      {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+      {isLoading && <SkeletonList />}
+      {isError && <ErrorState onRetry={() => refetch()} />}
       {!isLoading && (schedules?.length ?? 0) === 0 && (
         <p className="text-sm text-muted-foreground">No schedules yet.</p>
       )}

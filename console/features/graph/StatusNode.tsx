@@ -40,6 +40,8 @@ function StatusNodeImpl({ data, selected }: NodeProps<StatusFlowNode>) {
   const { label, templateKey, status } = data;
   return (
     <div
+      role="group"
+      aria-label={`${label}: ${status.replace(/_/g, " ")}`}
       className={cn(
         "w-48 rounded-md border-2 bg-card px-3 py-2 shadow-sm transition-colors",
         BORDER[status],

@@ -51,6 +51,15 @@ export function NodeDrawer({
           {rs?.finished_at ? new Date(rs.finished_at).toLocaleTimeString() : "—"}
         </Field>
 
+        {rs?.error && (
+          <div>
+            <div className="mb-1 text-xs font-medium text-muted-foreground">Error</div>
+            <pre className="overflow-auto rounded-md border border-status-failed/40 bg-status-failed/10 p-2 text-xs text-status-failed">
+              {rs.error}
+            </pre>
+          </div>
+        )}
+
         <div>
           <div className="mb-1 text-xs font-medium text-muted-foreground">Parameters</div>
           <pre className="overflow-auto rounded-md border border-border bg-muted p-2 text-xs">

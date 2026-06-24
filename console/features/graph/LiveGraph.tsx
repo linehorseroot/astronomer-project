@@ -11,22 +11,12 @@ import {
   type Edge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import type { TaskStatus, Workflow } from "@/lib/contract";
+import type { Workflow } from "@/lib/contract";
+import { statusColor } from "@/components/status/colors";
 import { StatusNode, type StatusFlowNode } from "./StatusNode";
 import type { RunState } from "./runReducer";
 
 const nodeTypes = { status: StatusNode };
-
-const MINIMAP_COLOR: Record<TaskStatus, string> = {
-  queued: "#64748b",
-  running: "#2563eb",
-  success: "#16a34a",
-  failed: "#dc2626",
-  retrying: "#d97706",
-  skipped: "#9ca3af",
-  upstream_failed: "#b45563",
-  deferred: "#7c3aed",
-};
 
 function buildNodes(workflow: Workflow, state: RunState): StatusFlowNode[] {
   return workflow.nodes.map((n) => ({
@@ -111,7 +101,7 @@ export function LiveGraph({
         <MiniMap
           pannable
           zoomable
-          nodeColor={(n) => MINIMAP_COLOR[(n.data as StatusFlowNode["data"]).status] ?? "#64748b"}
+          nodeColor={(n) => statusColor((n.data as StatusFlowNode["data"]).status)}
         />
       </ReactFlow>
     </div>

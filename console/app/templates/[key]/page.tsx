@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import type { TaskTemplate } from "@/lib/contract";
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/ui/page-header";
+import { ErrorState } from "@/components/ui/states";
 import { TemplateDetail } from "@/features/templates";
 import { useTemplate } from "@/lib/query/hooks";
 import { cn } from "@/lib/utils";
@@ -16,9 +17,10 @@ const APPROVAL: Record<TaskTemplate["governance"]["approval"], string> = {
 
 export default function TemplateDetailPage() {
   const params = useParams<{ key: string }>();
-  const { data: t, isLoading } = useTemplate(params.key);
+  const { data: t, isLoading, isError, refetch } = useTemplate(params.key);
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Loading…</p>;
+  if (isError) return <ErrorState onRetry={() => refetch()} />;
   if (!t) return <p className="text-sm text-muted-foreground">Template not found.</p>;
 
   return (

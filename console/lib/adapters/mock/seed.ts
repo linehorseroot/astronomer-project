@@ -238,7 +238,7 @@ export const seedRuns: Run[] = [
     triggered_by: "schedule:Nightly",
     tasks: [
       { node_id: "n1", display_name: "Load dim_customer", status: "success", attempt: 1, duration_ms: 401000 },
-      { node_id: "n2", display_name: "Build fct_revenue", status: "failed", attempt: 2, duration_ms: 60000 },
+      { node_id: "n2", display_name: "Build fct_revenue", status: "failed", attempt: 2, duration_ms: 60000, error: "SQL compilation error: invalid identifier 'MART.DIM_CUSTOMER'" },
       { node_id: "n3", display_name: "Validate fct_revenue", status: "upstream_failed", attempt: 0 },
       { node_id: "n4", display_name: "Notify #finance", status: "upstream_failed", attempt: 0 },
     ],

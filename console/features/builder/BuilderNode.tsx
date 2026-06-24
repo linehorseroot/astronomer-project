@@ -15,6 +15,8 @@ function BuilderNodeImpl({ data, selected }: NodeProps<BNode>) {
 
   return (
     <div
+      role="group"
+      aria-label={`${data.displayName || "Untitled task"}${complete ? "" : " — missing required parameters"}`}
       className={cn(
         "w-52 rounded-md border-2 bg-card px-3 py-2 shadow-sm transition-colors",
         complete ? "border-border" : "border-status-retrying",

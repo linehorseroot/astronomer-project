@@ -38,6 +38,15 @@ export function TaskDrilldown({
         {task.finished_at ? new Date(task.finished_at).toLocaleString() : "—"}
       </Field>
 
+      {task.error && (
+        <div>
+          <div className="mb-1 text-xs font-medium text-muted-foreground">Error</div>
+          <pre className="overflow-auto rounded-md border border-status-failed/40 bg-status-failed/10 p-2 text-xs text-status-failed">
+            {task.error}
+          </pre>
+        </div>
+      )}
+
       {node && (
         <div>
           <div className="mb-1 text-xs font-medium text-muted-foreground">Parameters</div>
