@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RunGraph } from "@/features/graph";
 import { useWorkflow } from "@/lib/query/hooks";
 
 export default function WorkflowDetailPage() {
@@ -19,14 +20,9 @@ export default function WorkflowDetailPage() {
         description={`${wf.tenant_id} · v${wf.version} · ${wf.status}`}
       />
 
-      <Card className="mb-4">
-        <CardContent className="pt-6 text-sm text-muted-foreground">
-          The animated live graph (React Flow) lands in Phase 1, and the drag-and-drop builder in
-          Phase 3. Below is the workflow’s task graph from its WorkflowSpec.
-        </CardContent>
-      </Card>
+      <RunGraph workflow={wf} />
 
-      <Card>
+      <Card className="mt-6">
         <CardHeader>
           <CardTitle>Tasks ({wf.nodes.length})</CardTitle>
         </CardHeader>
