@@ -142,6 +142,15 @@ export type Schedule = z.infer<typeof Schedule>;
 /* Runs & task instances                                               */
 /* ------------------------------------------------------------------ */
 
+export const RerunScope = z.enum([
+  "whole_run",
+  "from_task",
+  "single_task",
+  "failed_only",
+  "branch",
+]);
+export type RerunScope = z.infer<typeof RerunScope>;
+
 export const TaskInstance = z.object({
   node_id: z.string(),
   display_name: z.string(),
@@ -163,20 +172,16 @@ export const Run = z.object({
   started_at: z.string(),
   finished_at: z.string().optional(),
   tasks: z.array(TaskInstance),
+  /** Attribution / audit. */
+  triggered_by: z.string().optional(), // "user:rthangavelu" | "schedule:Nightly"
+  rerun_of: z.string().optional(), // parent execution_id
+  rerun_scope: RerunScope.optional(),
 });
 export type Run = z.infer<typeof Run>;
 
 /* ------------------------------------------------------------------ */
 /* Re-run                                                              */
 /* ------------------------------------------------------------------ */
-
-export const RerunScope = z.enum([
-  "whole_run",
-  "from_task",
-  "single_task",
-  "failed_only",
-  "branch",
-]);
 
 export const RerunRequest = z.object({
   execution_id: z.string(),

@@ -11,6 +11,7 @@ import type {
   TaskTemplate,
   Workflow,
 } from "@/lib/contract";
+import { affectedNodes } from "@/lib/rerun";
 import type { DataAdapter, EventScope, Unsubscribe } from "../types";
 import { seedRuns, seedSchedules, seedTemplates, seedWorkflows } from "./seed";
 import { simulateRun } from "./simulator";
@@ -79,13 +80,31 @@ export class MockAdapter implements DataAdapter {
   async rerun(req: RerunRequest): Promise<Run> {
     const prev = this.runs.find((r) => r.execution_id === req.execution_id);
     if (!prev) throw new Error(`Unknown run ${req.execution_id}`);
+    const wf = this.workflows.find((w) => w.id === prev.workflow_id);
+    const affected = new Set(
+      wf ? affectedNodes(wf, prev, req.scope, req.node_id) : prev.tasks.map((t) => t.node_id)
+    );
     const fresh: Run = {
       ...clone(prev),
       execution_id: `exec_${Date.now()}`,
       status: "queued",
       started_at: new Date().toISOString(),
       finished_at: undefined,
-      tasks: prev.tasks.map((t) => ({ ...t, status: "queued", attempt: 0, duration_ms: undefined })),
+      triggered_by: "user:rthangavelu",
+      rerun_of: prev.execution_id,
+      rerun_scope: req.scope,
+      tasks: prev.tasks.map((t) =>
+        affected.has(t.node_id)
+          ? {
+              ...t,
+              status: "queued",
+              attempt: 0,
+              duration_ms: undefined,
+              started_at: undefined,
+              finished_at: undefined,
+            }
+          : { ...t }
+      ),
     };
     this.runs.unshift(fresh);
     return clone(fresh);

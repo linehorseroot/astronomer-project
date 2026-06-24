@@ -225,8 +225,24 @@ export const seedSchedules: Schedule[] = [
   },
 ];
 
-/** A finished historical run, plus one we will animate live via the simulator. */
+/** Historical runs — incl. a failed one so re-run scopes are demonstrable. */
 export const seedRuns: Run[] = [
+  {
+    execution_id: "exec_20260617_finance",
+    workflow_id: "wf_finance_close",
+    workflow_version: 3,
+    workflow_name: "Daily Finance Close",
+    status: "failed",
+    started_at: "2026-06-17T02:00:00Z",
+    finished_at: "2026-06-17T02:06:10Z",
+    triggered_by: "schedule:Nightly",
+    tasks: [
+      { node_id: "n1", display_name: "Load dim_customer", status: "success", attempt: 1, duration_ms: 401000 },
+      { node_id: "n2", display_name: "Build fct_revenue", status: "failed", attempt: 2, duration_ms: 60000 },
+      { node_id: "n3", display_name: "Validate fct_revenue", status: "upstream_failed", attempt: 0 },
+      { node_id: "n4", display_name: "Notify #finance", status: "upstream_failed", attempt: 0 },
+    ],
+  },
   {
     execution_id: "exec_20260618_finance",
     workflow_id: "wf_finance_close",
@@ -235,11 +251,26 @@ export const seedRuns: Run[] = [
     status: "success",
     started_at: "2026-06-18T02:00:00Z",
     finished_at: "2026-06-18T02:14:32Z",
+    triggered_by: "schedule:Nightly",
     tasks: [
       { node_id: "n1", display_name: "Load dim_customer", status: "success", attempt: 1, duration_ms: 412000 },
       { node_id: "n2", display_name: "Build fct_revenue", status: "success", attempt: 1, duration_ms: 305000 },
       { node_id: "n3", display_name: "Validate fct_revenue", status: "success", attempt: 1, duration_ms: 41000 },
       { node_id: "n4", display_name: "Notify #finance", status: "success", attempt: 1, duration_ms: 1200 },
+    ],
+  },
+  {
+    execution_id: "exec_20260619_ops",
+    workflow_id: "wf_ops_ingest",
+    workflow_version: 1,
+    workflow_name: "Ops Hourly Ingest",
+    status: "success",
+    started_at: "2026-06-19T09:00:00Z",
+    finished_at: "2026-06-19T09:03:20Z",
+    triggered_by: "user:amorgan",
+    tasks: [
+      { node_id: "n1", display_name: "Fetch events", status: "success", attempt: 1, duration_ms: 120000 },
+      { node_id: "n2", display_name: "Stage events", status: "success", attempt: 1, duration_ms: 80000 },
     ],
   },
 ];
